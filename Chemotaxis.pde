@@ -1,9 +1,9 @@
-class Bacteria    
- {     
+class Bacteria 
+{     
    int X,Y;
    Bacteria(){
-     X = 25;
-     Y = 25;
+     X = 1000;
+     Y = 1000;
    }
    void move(double fx, double fy){
      if(X>fx){
@@ -18,50 +18,49 @@ class Bacteria
      }
    }//end move
    void show(){
+     fill(0,255,0);
      ellipse(X,Y,30,30);
    }
    //lots of java!   
- }//end bacteria class   
+ }//end bacteria class   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
  
- Bacteria bob;
+ Bacteria[] bob = new Bacteria[500];
  int x=500;
  int y = 500;
- int ys = 0;
- int xs = 0;
- PVector v1 = new PVector(500,500);
- boolean[] press = new boolean[4];
+ int bact = 0;
  //declare bacteria variables here   
- void setup()   
- {     
+ void setup(){   
+   textAlign(CENTER, CENTER);
    size(1000,1000);
-   bob = new Bacteria();
-   for(int i = 0;i<=4;i++){
-     press[i]=false;
+   for(int i = 0;i<10;i++){
+     bob[i] = new Bacteria();
+     bact++;
    }
    //initialize bacteria variables here   
  }   
- void draw()
+  void draw()
  {    
    background(0);
-     if (key == 'w'){
-       press[0]=true;
-     }
-     if (key == 'a'){
-       press[1]=true;
-     }
-     if (key == 's'){
-       press[2]=true;
-     }
-     if (key == 'd'){
-       press[3]=true;
-     }
-
-   //key presses
-   fill(255,0,0);
-   ellipse(v1.x,v1.y,40,40);
-   bob.move(v1.x,v1.y);
-   fill(255);
-   bob.show();
-   //move and show the bacteria   
- }  
    
+   // Draw Player
+   fill(255, 0, 0);
+   ellipse(mouseX, mouseY, 40, 40);
+   
+   if (frameCount % 30 == 0 && bact < bob.length) {
+     bob[bact] = new Bacteria();
+     bact++;
+   }
+   
+   // Process all currently active bacteria
+   for (int i = 0; i < bact; i++) {
+     bob[i].move(mouseX, mouseY);
+     bob[i].show();
+     float distance = dist(bob[i].X, bob[i].Y, mouseX, mouseY);
+     if (distance < 35) {
+       fill(0, 255, 0);
+       textSize(48);
+       text("You were unable to stay clear of covid", width / 2, height / 2);
+       noLoop(); 
+     }
+   }
+ }
